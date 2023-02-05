@@ -38,9 +38,10 @@ jobs:
         echo "Running recon on $TARGET"
         echo "Running subdomain enumeration using assetfinder"
         ./assetfinder $TARGET >> subdomains.txt
-         echo "Running screenshot using Aquatone"
-        aquatone-discover --wordlist subdomains.txt
-        aquatone-scan --ports xlarge subdomains.txt
+        echo subdomains.txt
+        echo "Running screenshot using Aquatone"
+        cat subdomains.txt | aquatone-discover
+        cat subdomains.txt | aquatone-scan --ports xlarge
 
     - name: Upload Screenshots
       uses: actions/upload-artifact@v2
