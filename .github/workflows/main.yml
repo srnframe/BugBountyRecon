@@ -1,0 +1,56 @@
+name: Bug Bounty Recon
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: "0 */10 * * *"
+
+env:
+  TARGET: duolingo.com
+
+jobs:
+  run-recon:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+      with:
+        ref: master
+        token: ${{ secrets.PAT }}
+
+    - name: Install Tools
+      run: |
+        echo "Installing assetfinder"
+        sudo apt-get install -y golang-go
+        go get -u github.com/tomnomnom/assetfinder
+
+        echo "Installing EyeWitness"
+        sudo apt-get install -y python3 python3-pip
+        sudo pip3 install selenium
+        git clone https://github.com/ChrisTruncer/EyeWitness.git
+
+    - name: Run Recon
+      run: |
+        echo "Running recon on $TARGET"
+        echo "Running subdomain enumeration using assetfinder"
+        assetfinder $TARGET >> subdomains.txt
+        echo "Running screenshot using EyeWitness"
+        EyeWitness/EyeWitness.py -f subdomains.txt --headless
+
+    - name: Upload Screenshots
+      uses: actions/upload-artifact@v2
+      with:
+        name: screenshots
+        path: EyeWitness/Reports
+
+    - name: Send Telegram Notification
+      if: always()
+      uses: t-kashima/action-telegram-notify@v1
+      env:
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      with:
+        message: "Bug bounty recon on $TARGET has completed. Screenshots are available in the GitHub Actions workflow."
