@@ -23,22 +23,26 @@ jobs:
 
     - name: Install Tools
       run: |
-        echo "Installing assetfinder"
-        sudo apt-get install -y golang-go
-        go install github.com/tomnomnom/assetfinder@latest
-
         echo "Installing EyeWitness"
         sudo apt-get install -y python3 python3-pip
         sudo pip3 install selenium
         git clone https://github.com/ChrisTruncer/EyeWitness.git
 
+        echo "Installing assetfinder"
+        sudo apt-get install -y golang-go
+        git clone https://github.com/tomnomnom/assetfinder.git
+        cd assetfinder
+        go build
+        cd ..
+
     - name: Run Recon
       run: |
         echo "Running recon on $TARGET"
         echo "Running subdomain enumeration using assetfinder"
-        assetfinder $TARGET >> subdomains.txt
-        echo "Running screenshots using EyeWitness"
+        ./assetfinder/assetfinder $TARGET >> subdomains.txt
+        echo "Running screenshot using EyeWitness"
         EyeWitness/EyeWitness.py -f subdomains.txt --headless
+
 
     - name: Upload Screenshots
       uses: actions/upload-artifact@v2
