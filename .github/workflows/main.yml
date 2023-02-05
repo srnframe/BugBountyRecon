@@ -43,7 +43,7 @@ jobs:
         echo "Running subdomain enumeration using assetfinder"
         ./assetfinder $TARGET >> subdomains.txt
         echo "Running screenshot using EyeWitness"
-        python3 ./EyeWitness/EyeWitness.py -f subdomains.txt --headless
+        ./EyeWitness -f subdomains.txt --headless
 
 
     - name: Upload Screenshots
