@@ -26,7 +26,10 @@ jobs:
         echo "Installing EyeWitness"
         sudo apt-get install -y python3 python3-pip
         sudo pip3 install selenium
-        git clone https://github.com/ChrisTruncer/EyeWitness.git
+        wget https://github.com/FortyNorthSecurity/EyeWitness/archive/refs/tags/v20221203.1.tar.gz
+        tar -xf v20221203.1.tar.gz
+        rm v20221203.1.tar.gz
+        mv EyeWitness-20221203.1 EyeWitness
 
          echo "Installing assetfinder"
         sudo apt-get install -y golang-go
@@ -49,11 +52,9 @@ jobs:
         name: screenshots
         path: EyeWitness/Reports
 
-    - name: Send Telegram Notification
-      if: always()
+    - name: send default message
       uses: appleboy/telegram-action@master
-      env:
+      with:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
-      with:
         message: "Bug bounty recon on $TARGET has completed. Screenshots are available in the GitHub Actions workflow."
