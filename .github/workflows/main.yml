@@ -39,8 +39,8 @@ jobs:
         echo "Running subdomain enumeration using assetfinder"
         ./assetfinder $TARGET >> subdomains.txt
          echo "Running screenshot using Aquatone"
-        aquatone-discover --threads 100 --timeout 5 --wordlist subdomains.txt
-        aquatone-scan --ports xlarge --threads 100 --timeout 5 subdomains.txt
+        aquatone-discover --wordlist subdomains.txt
+        aquatone-scan --ports xlarge subdomains.txt
 
     - name: Upload Screenshots
       uses: actions/upload-artifact@v2
