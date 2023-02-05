@@ -23,15 +23,11 @@ jobs:
 
     - name: Install Tools
       run: |
-        echo "Installing EyeWitness"
-        sudo apt-get install -y python3 python3-pip
-        sudo pip3 install selenium
-        wget https://github.com/FortyNorthSecurity/EyeWitness/archive/refs/tags/v20221203.1.tar.gz
-        tar -xf v20221203.1.tar.gz
-        rm v20221203.1.tar.gz
-        mv EyeWitness-20221203.1 EyeWitness
+        echo "Installing Aquatone"
+        sudo apt-get install -y ruby ruby-dev
+        sudo gem install aquatone
 
-         echo "Installing assetfinder"
+        echo "Installing assetfinder"
         sudo apt-get install -y golang-go
         wget https://github.com/tomnomnom/assetfinder/releases/download/v0.1.1/assetfinder-linux-amd64-0.1.1.tgz
         tar -xvf assetfinder-linux-amd64-0.1.1.tgz
@@ -42,15 +38,15 @@ jobs:
         echo "Running recon on $TARGET"
         echo "Running subdomain enumeration using assetfinder"
         ./assetfinder $TARGET >> subdomains.txt
-        echo "Running screenshot using EyeWitness"
-        python3 ./EyeWitness/Python/EyeWitness.py -f subdomains.txt --headless
-
+         echo "Running screenshot using Aquatone"
+        aquatone-discover --threads 100 --timeout 5 --wordlist subdomains.txt
+        aquatone-scan --ports xlarge --threads 100 --timeout 5 subdomains.txt
 
     - name: Upload Screenshots
       uses: actions/upload-artifact@v2
       with:
         name: screenshots
-        path: EyeWitness/Reports
+        path: aquatone
 
     - name: send default message
       uses: appleboy/telegram-action@master
