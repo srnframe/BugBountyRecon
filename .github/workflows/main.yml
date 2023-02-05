@@ -38,7 +38,7 @@ jobs:
       run: |
         echo "Running recon on $TARGET"
         echo "Running subdomain enumeration using assetfinder"
-        ./assetfinder-linux-amd64-0.1.1/assetfinder $TARGET >> subdomains.txt
+        ./assetfinder $TARGET >> subdomains.txt
         echo "Running screenshot using EyeWitness"
         EyeWitness/EyeWitness.py -f subdomains.txt --headless
 
