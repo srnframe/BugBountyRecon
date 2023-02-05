@@ -30,7 +30,7 @@ jobs:
 
          echo "Installing assetfinder"
         sudo apt-get install -y golang-go
-        wget https://objects.githubusercontent.com/github-production-release-asset-2e65be/193392376/71a80e80-5fc4-11eb-9534-51965f0b3d4c?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20230205%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230205T190917Z&X-Amz-Expires=300&X-Amz-Signature=1891905ea95146078d64979e048a7fcab362077444f5fdbe52cdc7600dcacb59&X-Amz-SignedHeaders=host&actor_id=61207401&key_id=0&repo_id=193392376&response-content-disposition=attachment%3B%20filename%3Dassetfinder-linux-amd64-0.1.1.tgz&response-content-type=application%2Foctet-stream
+        wget https://github.com/tomnomnom/assetfinder/releases/download/v0.1.1/assetfinder-linux-amd64-0.1.1.tgz
         tar -xvf assetfinder-linux-amd64-0.1.1.tgz
         chmod +x *
 
