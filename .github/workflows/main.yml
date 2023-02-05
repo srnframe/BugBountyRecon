@@ -48,7 +48,7 @@ jobs:
 
     - name: Send Telegram Notification
       if: always()
-      uses: t-kashima/action-telegram-notify@v1
+      uses: peter-evans/telegram-action@v0.9.0
       env:
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
