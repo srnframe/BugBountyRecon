@@ -40,7 +40,7 @@ jobs:
         echo "Running subdomain enumeration using assetfinder"
         ./assetfinder $TARGET >> subdomains.txt
         echo "Running screenshot using EyeWitness"
-        EyeWitness -f subdomains.txt --headless
+        python3 ./EyeWitness/EyeWitness.py -f subdomains.txt --headless
 
 
     - name: Upload Screenshots
@@ -53,7 +53,7 @@ jobs:
       if: always()
       uses: appleboy/telegram-action@master
       env:
-        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
       with:
         message: "Bug bounty recon on $TARGET has completed. Screenshots are available in the GitHub Actions workflow."
